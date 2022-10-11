@@ -1,6 +1,7 @@
 const Joi = require("joi");
 
 module.exports = {
+  
   addContactValidation: (req, res, next) => {
     const schema = Joi.object({
       name: Joi.string().alphanum().min(2).max(30).required(),
@@ -8,8 +9,7 @@ module.exports = {
         .email({
           minDomainSegments: 2,
           tlds: { allow: ["com", "net"] },
-        })
-        .required(),
+        }).required(),
       phone: Joi.string().alphanum().min(5).max(12).required(),
     });
     const validateBody = schema.validate(req.body);
@@ -18,6 +18,7 @@ module.exports = {
     }
     next();
   },
+
   putContactValidation: (req, res, next) => {
     const schema = Joi.object({
       name: Joi.string().alphanum().min(2).max(30).required(),
@@ -25,8 +26,7 @@ module.exports = {
         .email({
           minDomainSegments: 2,
           tlds: { allow: ["com", "net"] },
-        })
-        .required(),
+        }).required(),
       phone: Joi.string().alphanum().min(5).max(12).required(),
     });
     const validatePutBody = schema.validate(req.body);
