@@ -1,3 +1,3 @@
-const service = require("./service");
+const { User, schemas } = require("./schemasAuth");
 
-module.exports = { service };
+module.exports = { User, schemas };
