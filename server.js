@@ -8,7 +8,9 @@ const DB_HOST = process.env.MONGO_URL;
 
 const connection = mongoose.connect(DB_HOST, {
   promiseLibrary: global.Promise,
+  // useCreateIndex: true,
   useUnifiedTopology: true,
+  // useFindAndModify: false,
 });
 
 connection

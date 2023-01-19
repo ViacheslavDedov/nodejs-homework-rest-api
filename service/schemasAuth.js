@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
 const Joi = require("joi");
-const handleSaveErrors = require("../helpers/handleSaveErrors");
+const { handleSaveErrors } = require("../helpers");
 const userSchema = new Schema(
   {
     password: {
@@ -20,8 +20,17 @@ const userSchema = new Schema(
     },
     avatarURL: {
       type: String,
+      // required: true,
     },
     token: String,
+    verify: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: {
+      type: String,
+      required: [true, "Verify token is required"],
+    },
   },
   { versionKey: false, timestamps: true }
 );
@@ -40,7 +49,7 @@ const schemas = {
         .required(),
       subscription: Joi.string().alphanum(),
       avatarURL: Joi.string(),
-      token: Joi.string(),
+      // token: Joi.string(),
     });
     const validateUser = schema.validate(req.body);
     if (validateUser.error) {
@@ -71,6 +80,16 @@ const schemas = {
     const validateLogin = schema.validate(req.body);
     if (validateLogin.error) {
       return res.status(400).json({ message: `${validateLogin.error}` });
+    }
+    next();
+  },
+  verifyEmailSchema: (req, res, next) => {
+    const schema = Joi.object({
+      email: Joi.string().required(),
+    });
+    const verifyEmail = schema.validate(req.body);
+    if (verifyEmail.error) {
+      return res.status(400).json({ message: "missing required field email" });
     }
     next();
   },
